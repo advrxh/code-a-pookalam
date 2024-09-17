@@ -71,9 +71,10 @@ body {
 
 
 body canvas {
-    border: 2px solid black;
+    /* border: 2px solid black; */
     background: transparent;
     margin: 1.3em;
+    transform: rotate(15deg);
 }
 
 footer {
