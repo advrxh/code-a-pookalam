@@ -77,6 +77,24 @@ const server = http.createServer(async (req, res) => {
 
         })
     }
+
+
+    if (req.url == "/stache.png") {
+
+        var stream = fs.createReadStream(path.join(__dirname, req.url))
+
+
+        stream.on('open', function () {
+            res.setHeader('Content-Type', "image/png");
+            res.statusCode = 200
+            stream.pipe(res);
+        });
+        stream.on('error', function () {
+            res.setHeader('Content-Type', 'text/plain');
+            res.statusCode = 404;
+            res.end('Not found');
+        });
+    }
 })
 
 server.listen(3000, () => console.log("Listening on 3000"))

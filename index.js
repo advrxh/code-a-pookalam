@@ -1,9 +1,7 @@
 // dom listeners
-
 window.onresize = () => window.location.href = "/"
 
 // constants
-
 const PI = Math.PI
 
 const COLORS = {
@@ -18,11 +16,16 @@ const COLORS = {
         pink: "#C77590",
         white: "#e1e1e1",
         green: "#2F331E"
+    },
+    maveli: {
+        black: "#000000",
+        brown: "#A5521C",
+        gold: "gold",
+        face: "#ECB98A"
     }
 }
 
 // utility functions
-
 const getCenter = (canvas) => {
     return {
         x: canvas.width / 2,
@@ -35,7 +38,6 @@ const getUnit = (canvas) => {
 }
 
 // class definitions
-
 class Layer {
     constructor(ctx, canvas) {
         this.ctx = ctx;
@@ -45,110 +47,6 @@ class Layer {
     }
 }
 
-class LayerTwo extends Layer {
-    constructor(ctx, canvas, lastDescendFactor, lastDescendRatio, lastRadius) {
-        super(ctx, canvas)
-        this.lastDescendFactor = lastDescendFactor
-        this.lastDescendRatio = lastDescendRatio
-        this.lastRadius = lastRadius
-    }
-
-    genBinaryArray(text) {
-        var binaryArray = []
-
-        for (var i = 0; i < text.length; i++) {
-            binaryArray.push(text[i].charCodeAt(0).toString(2))
-        }
-
-        for (var i = 0; i < 5; i++) {
-            var k = binaryArray[i]
-            k = "0" + k
-            binaryArray[i] = k
-        }
-
-        return binaryArray
-    }
-    drawBinary(binaryArray) {
-        var binaryArray = this.genBinaryArray("Happy Onam")
-        var bitAngleSize = 4 * (PI / 180)
-
-
-        if (this.unit >= 450) {
-            var descendFactor = 20.5
-        }
-        else {
-            var descendFactor = 5
-        }
-
-
-        var shiftFactor = 0
-
-        for (var charBinaryArray of binaryArray) {
-            for (var i = 0; i < 8; i++) {
-
-                var start = (PI + ((PI / 16) / 5 - 3.5 * ((PI / 6) / 6.2))) + bitAngleSize * shiftFactor
-                var end = start + bitAngleSize
-
-                if (Number(charBinaryArray[i]) == 0) {
-                    var color = COLORS.binaryLayer.white;
-                }
-                else {
-                    var color = COLORS.layerOne.orange
-                }
-
-                this.ctx.beginPath();
-                this.ctx.strokeStyle = color;
-                this.ctx.lineWidth = this.unit * 0.05
-                var radius = this.lastRadius - this.lastDescendRatio * descendFactor
-                this.ctx.arc(center.x, center.y, radius, start, end)
-                this.ctx.stroke();
-                this.ctx.closePath();
-                shiftFactor += 1
-            }
-
-            var start = (PI + ((PI / 16) / 5 - 3.5 * ((PI / 6) / 6.2))) + (bitAngleSize) * shiftFactor
-            var end = start + bitAngleSize
-
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = COLORS.border;
-            this.ctx.lineWidth = this.unit * 0.05
-            var radius = this.lastRadius - this.lastDescendRatio * descendFactor
-            this.ctx.arc(center.x, center.y, radius, start, end)
-            this.ctx.stroke();
-            this.ctx.closePath();
-            shiftFactor += 1
-        }
-
-        this.lastRadius = radius
-        this.lastDescendFactor = descendFactor
-        this.lastDescendRatio = 1
-
-    }
-
-    circle() {
-
-        if (this.unit >= 450) {
-            var descendFactor = 1
-        }
-        else {
-            var descendFactor = 1
-        }
-
-        var radius = this.lastRadius - this.lastDescendFactor * descendFactor
-        this.ctx.beginPath();
-        this.ctx.strokeStyle = COLORS.border
-        this.ctx.lineWidth = this.unit * 0.01
-        this.ctx.arc(center.x, center.y, radius, 0, 2 * PI)
-        this.ctx.stroke();
-        this.ctx.closePath();
-
-        this.lastRadius = radius
-        this.lastDescendFactor = descendFactor
-        this.lastDescendRatio = 1
-
-
-    }
-}
 
 class LayerOne extends Layer {
     constructor(ctx, canvas) {
@@ -221,7 +119,7 @@ class LayerOne extends Layer {
         var radius = this.lastRadius - this.lastDescendFactor * descendFactor
         this.ctx.beginPath();
         this.ctx.strokeStyle = COLORS.border
-        this.ctx.lineWidth = this.unit * 0.01
+        this.ctx.lineWidth = this.unit * 0.015
         this.ctx.arc(center.x, center.y, radius, 0, 2 * PI)
         this.ctx.stroke();
         this.ctx.closePath();
@@ -235,8 +133,450 @@ class LayerOne extends Layer {
 
 }
 
-// plotter functions
 
+class LayerTwo extends Layer {
+    constructor(ctx, canvas, lastDescendFactor, lastDescendRatio, lastRadius) {
+        super(ctx, canvas)
+        this.lastDescendFactor = lastDescendFactor
+        this.lastDescendRatio = lastDescendRatio
+        this.lastRadius = lastRadius
+    }
+
+    genBinaryArray(text) {
+        var binaryArray = []
+
+        for (var i = 0; i < text.length; i++) {
+            binaryArray.push(text[i].charCodeAt(0).toString(2))
+        }
+
+        for (var i = 0; i < 10; i++) {
+
+            var k = binaryArray[i]
+            k = "0" + k
+
+            if (i == 5) {
+                k = "00100000"
+            }
+
+            binaryArray[i] = k
+        }
+
+        return binaryArray
+    }
+    drawBinary(binaryArray) {
+        var binaryArray = this.genBinaryArray("Happy Onam")
+        var bitAngleSize = 4 * (PI / 180)
+
+
+        if (this.unit >= 450) {
+            var descendFactor = 20.5
+        }
+        else {
+            var descendFactor = 5
+        }
+
+
+        var shiftFactor = 0
+
+        for (var charBinaryArray of binaryArray) {
+            for (var i = 0; i < 8; i++) {
+
+                var start = (PI + ((PI / 16) / 5 - 3.5 * ((PI / 6) / 6.2))) + bitAngleSize * shiftFactor
+                var end = start + bitAngleSize
+
+                if (Number(charBinaryArray[i]) == 0) {
+                    var color = COLORS.binaryLayer.white;
+                }
+                else {
+                    var color = COLORS.layerOne.yellow
+                }
+
+                this.ctx.beginPath();
+                this.ctx.strokeStyle = color;
+                this.ctx.lineWidth = this.unit * 0.05
+                var radius = this.lastRadius - this.lastDescendRatio * descendFactor
+                this.ctx.arc(center.x, center.y, radius, start, end)
+                this.ctx.stroke();
+                this.ctx.closePath();
+                shiftFactor += 1
+            }
+
+            var start = (PI + ((PI / 16) / 5 - 3.5 * ((PI / 6) / 6.2))) + (bitAngleSize) * shiftFactor
+            var end = start + bitAngleSize
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = COLORS.border;
+            this.ctx.lineWidth = this.unit * 0.05
+            var radius = this.lastRadius - this.lastDescendRatio * descendFactor
+            this.ctx.arc(center.x, center.y, radius, start, end)
+            this.ctx.stroke();
+            this.ctx.closePath();
+            shiftFactor += 1
+        }
+
+        this.lastRadius = radius
+        this.lastDescendFactor = descendFactor
+        this.lastDescendRatio = 1
+
+    }
+
+    circle() {
+
+        if (this.unit >= 450) {
+            var descendFactor = 1
+        }
+        else {
+            var descendFactor = 1
+        }
+
+        var radius = this.lastRadius - this.lastDescendFactor * descendFactor
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = COLORS.border
+        this.ctx.lineWidth = this.unit * 0.01
+        this.ctx.arc(center.x, center.y, radius, 0, 2 * PI)
+        this.ctx.stroke();
+        this.ctx.closePath();
+
+        this.lastRadius = radius
+        this.lastDescendFactor = descendFactor
+        this.lastDescendRatio = 1
+
+
+    }
+}
+
+class LayerThree extends Layer {
+    constructor(ctx, canvas, lastDescendFactor, lastDescendRatio, lastRadius) {
+        super(ctx, canvas)
+        this.lastDescendFactor = lastDescendFactor
+        this.lastDescendRatio = lastDescendRatio
+        this.lastRadius = lastRadius
+
+
+    }
+
+    sectionThree() {
+
+        if (this.unit >= 450) {
+            var descendFactor = 13
+        }
+        else {
+            var descendFactor = 4
+        }
+
+        var shiftFactor = 0
+        var shiftAngle = PI / 5
+        var stripSize = ((4 * PI) / 180) * 8
+        var radius = this.lastRadius - this.lastDescendFactor * descendFactor
+
+        for (var i = 0; i < 10; i++) {
+
+
+            var start = 0 - (4 * PI / 180) * 3.7 + (shiftFactor * shiftAngle)
+            var end = start + stripSize
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = COLORS.border
+            this.ctx.lineWidth = this.unit * 0.03
+            this.ctx.arc(this.center.x, this.center.y, radius, start, end)
+            this.ctx.stroke();
+            this.ctx.closePath();
+
+            shiftFactor += 1
+        }
+
+        var shiftFactor = 0
+        var shiftAngle = PI / 5
+        var stripSize = ((4 * PI) / 180) * 7
+        var radius = this.lastRadius - this.lastDescendFactor * descendFactor * 2.5
+
+        for (var i = 0; i < 10; i++) {
+
+
+            var start = 0 - (4 * PI / 180) * 3.2 + (shiftFactor * shiftAngle)
+            var end = start + stripSize
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = COLORS.layerOne.red
+            this.ctx.lineWidth = this.unit * 0.03
+            this.ctx.arc(this.center.x, this.center.y, radius, start, end)
+            this.ctx.stroke();
+            this.ctx.closePath();
+
+            shiftFactor += 1
+        }
+
+        var shiftFactor = 0
+        var shiftAngle = PI / 5
+        var stripSize = ((4 * PI) / 180) * 6
+        var radius = this.lastRadius - this.lastDescendFactor * descendFactor * 4
+
+        for (var i = 0; i < 10; i++) {
+
+
+            var start = 0 - (4 * PI / 180) * 2.7 + (shiftFactor * shiftAngle)
+            var end = start + stripSize
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = COLORS.layerOne.orange
+            this.ctx.lineWidth = this.unit * 0.03
+            this.ctx.arc(this.center.x, this.center.y, radius, start, end)
+            this.ctx.stroke();
+            this.ctx.closePath();
+
+            shiftFactor += 1
+        }
+
+
+        var shiftFactor = 0
+        var shiftAngle = PI / 5
+        var stripSize = ((4 * PI) / 180) * 5
+        var radius = this.lastRadius - this.lastDescendFactor * descendFactor * 5.5
+
+        for (var i = 0; i < 10; i++) {
+
+
+            var start = 0 - (4 * PI / 180) * 2.3 + (shiftFactor * shiftAngle)
+            var end = start + stripSize
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = COLORS.layerOne.yellow
+            this.ctx.lineWidth = this.unit * 0.03
+            this.ctx.arc(this.center.x, this.center.y, radius, start, end)
+            this.ctx.stroke();
+            this.ctx.closePath();
+
+            shiftFactor += 1
+        }
+
+
+        var shiftFactor = 0
+        var shiftAngle = PI / 5
+        var stripSize = ((4 * PI) / 180) * 4
+        var radius = this.lastRadius - this.lastDescendFactor * descendFactor * 7
+
+        for (var i = 0; i < 10; i++) {
+
+
+            var start = 0 - (4 * PI / 180) * 1.9 + (shiftFactor * shiftAngle)
+            var end = start + stripSize
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = COLORS.layerOne.white
+            this.ctx.lineWidth = this.unit * 0.03
+            this.ctx.arc(this.center.x, this.center.y, radius, start, end)
+            this.ctx.stroke();
+            this.ctx.closePath();
+
+            shiftFactor += 1
+        }
+
+    }
+
+    circle() {
+        var descendFactor = 3.25
+
+
+        this.ctx.beginPath();
+        this.ctx.fillStyle = COLORS.binaryLayer.green
+        this.ctx.arc(this.center.x, this.center.y, this.unit / descendFactor, 0, 2 * PI)
+        this.ctx.fill();
+        this.ctx.closePath();
+
+
+    }
+}
+
+class LayerFour extends Layer {
+    constructor(ctx, canvas) {
+        super(ctx, canvas)
+    }
+
+    drawMaveli() {
+
+        if (this.unit >= 450) {
+            var descendFactor = 6
+            var crownDescentFactorY = 30
+            var crownDescentFactorX = 10
+            var stacheDescentFactorX = -25
+            var stacheDescentFactorY = 40
+        }
+        else {
+            var descendFactor = 5
+            var crownDescentFactorY = 15
+            var crownDescentFactorX = 5
+            var stacheDescentFactorX = 0
+            var stacheDescentFactorY = 0
+        }
+
+        var radius = this.unit / (descendFactor * 1.5)
+
+        var rotateAngle = -(PI / 10)
+
+        this.ctx.beginPath()
+        this.ctx.fillStyle = COLORS.maveli.gold
+        this.ctx.arc(this.center.x + crownDescentFactorX, this.center.y + crownDescentFactorY, radius, 0 + rotateAngle, PI + rotateAngle, true)
+        this.ctx.fill()
+        this.ctx.closePath();
+
+        this.ctx.beginPath()
+        this.ctx.fillStyle = COLORS.maveli.face
+        this.ctx.arc(this.center.x + crownDescentFactorX, this.center.y + crownDescentFactorY, radius * 0.8, 0 + rotateAngle, PI + rotateAngle)
+        this.ctx.fill()
+        this.ctx.closePath();
+
+        this.ctx.beginPath()
+        this.ctx.strokeStyle = COLORS.maveli.gold
+        this.ctx.lineWidth = this.unit * 0.03
+        this.ctx.arc(this.center.x - crownDescentFactorX, this.center.y - crownDescentFactorY, radius * 0.8, PI / 2 + PI / 4 + rotateAngle, 2 * PI + PI / 4 + rotateAngle)
+        this.ctx.stroke()
+        this.ctx.closePath();
+
+
+        const stache = new Image()
+        stache.src = window.location.href + "stache.png"
+
+        stache.onload = () => this.ctx.drawImage(stache, this.center.x + stacheDescentFactorX, this.center.y + stacheDescentFactorY, 100, 80)
+
+
+    }
+
+    background() {
+        if (this.unit >= 450) {
+            var descendFactor = 6
+        }
+        else {
+            var descendFactor = 5
+        }
+
+        this.ctx.beginPath();
+        this.ctx.fillStyle = COLORS.layerOne.orange
+        this.ctx.arc(this.center.x, this.center.y, this.unit / descendFactor, 0, 2 * PI)
+        this.ctx.fill()
+        this.ctx.closePath();
+
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = COLORS.binaryLayer.green
+        this.ctx.lineWidth = this.unit * 0.01
+        this.ctx.arc(this.center.x, this.center.y, this.unit / descendFactor, 0, 2 * PI)
+        this.ctx.stroke();
+        this.ctx.closePath();
+
+    }
+}
+
+class LayerFive extends Layer {
+    constructor(ctx, canvas) {
+        super(ctx, canvas);
+        this.mousePos = { x: canvas.width / 2, y: canvas.height / 2 }; // Start with mouse in the center
+
+        // Listen to mouse movement
+        canvas.addEventListener('mousemove', (event) => {
+            this.mousePos = this.getMousePos(canvas, event);
+        });
+
+        this.animate(); // Start the animation loop
+    }
+
+    getMousePos(canvas, event) {
+        // Correctly get mouse position relative to the canvas
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+        };
+    }
+
+    drawEyes() {
+        if (this.unit >= 450) {
+
+            var radius = 15
+
+            var leftEyeDescentFactorY = 60
+            var leftEyeDescentFactorX = -10
+
+            var rightEyeDescentFactorY = 44
+            var rightEyeDescentFactorX = +40
+
+            var crownDescentFactorY = 40
+            var crownDescentFactorX = 10
+        }
+        else {
+
+            var radius = 6
+
+            var leftEyeDescentFactorY = 26
+            var leftEyeDescentFactorX = -5
+
+            var rightEyeDescentFactorY = 20
+            var rightEyeDescentFactorX = 18
+
+            var crownDescentFactorY = 15
+            var crownDescentFactorX = 5
+        }
+
+        let eyeColor = "#fff";
+        var leftEyeX = this.center.x + leftEyeDescentFactorX;
+        var leftEyeY = this.center.y + leftEyeDescentFactorY;
+        var rightEyeX = this.center.x + rightEyeDescentFactorX;
+        var rightEyeY = this.center.y + rightEyeDescentFactorY;
+        var rotateAngle = -PI / 6
+
+        // Clear canvas before drawing
+        // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.beginPath()
+        this.ctx.fillStyle = COLORS.maveli.face
+        this.ctx.arc(this.center.x + crownDescentFactorX, this.center.y + crownDescentFactorY, radius * 0.8, 0 + rotateAngle, PI + rotateAngle)
+        this.ctx.fill()
+        this.ctx.closePath();
+
+
+        // Draw the left and right eyes (white part)
+        this.drawCircle(leftEyeX, leftEyeY, radius, eyeColor);
+        this.drawCircle(rightEyeX, rightEyeY, radius, eyeColor);
+
+        // Adjust pupil positions based on the mouse position
+        let maxPupilOffset = radius * 0.5; // Limit the pupil movement within the eye radius
+
+        let leftPupilOffset = this.getPupilOffset(leftEyeX, leftEyeY, maxPupilOffset);
+        let rightPupilOffset = this.getPupilOffset(rightEyeX, rightEyeY, maxPupilOffset);
+
+        // Draw the pupils (black part)
+        this.drawCircle(leftEyeX + leftPupilOffset.x, leftEyeY + leftPupilOffset.y, radius * 0.5, "black");
+        this.drawCircle(rightEyeX + rightPupilOffset.x, rightEyeY + rightPupilOffset.y, radius * 0.5, "black");
+    }
+
+    getPupilOffset(eyeX, eyeY, maxOffset) {
+        let dx = this.mousePos.x - eyeX;
+        let dy = this.mousePos.y - eyeY;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Limit the pupil's movement within the eye
+        let maxDistance = Math.min(distance, maxOffset);
+        let angle = Math.atan2(dy, dx);
+
+        return {
+            x: Math.cos(angle) * maxDistance,
+            y: Math.sin(angle) * maxDistance
+        };
+    }
+
+    drawCircle(x, y, radius, color) {
+        this.ctx.beginPath();
+        this.ctx.fillStyle = color;
+        this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.closePath();
+    }
+
+    // Animation loop
+    animate() {
+        this.drawEyes(); // Redraw eyes and pupils
+        requestAnimationFrame(() => this.animate()); // Keep looping
+    }
+}
+
+// plotter functions
 const border = (ctx, canvas) => {
 
     center = getCenter(canvas)
@@ -258,8 +598,7 @@ const border = (ctx, canvas) => {
     ctx.closePath()
 }
 
-
-
+// root function
 const draw = () => {
 
     /** @type {HTMLCanvasElement} */
@@ -324,12 +663,25 @@ const draw = () => {
     coloredVerticalLayers(4, COLORS.layerOne.red)
     coloredVerticalLayers(5, COLORS.layerOne.orange)
     coloredVerticalLayers(6, COLORS.layerOne.yellow)
-
     layerOne.circle()
-
 
     // binary layer
     layerTwo = new LayerTwo(ctx, canvas, layerOne.lastDescendFactor, layerOne.lastDescendRatio, layerOne.lastRadius)
     layerTwo.drawBinary()
     layerTwo.circle()
+
+    // layerThree = new LayerThree(ctx, canvas, layerTwo.lastDescendFactor, layerTwo.lastDescendRatio, layerTwo.lastRadius)
+    layerThree = new LayerThree(ctx, canvas, layerTwo.lastDescendFactor, layerTwo.lastDescendRatio, layerTwo.lastRadius)
+    layerThree.circle()
+    layerThree.sectionThree()
+
+    // maveli layer
+    layerFour = new LayerFour(ctx, canvas)
+    layerFour.background()
+    layerFour.drawMaveli()
+
+    // moving eyes
+
+
+    layerFive = new LayerFive(ctx, canvas)
 }
