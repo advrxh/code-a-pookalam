@@ -1,3 +1,10 @@
+/*
+
+!! This file is a copy of /index.js, made to adhere to the submission rules.
+
+*/
+
+
 // dom listeners
 window.onresize = () => window.location.href = "/"
 

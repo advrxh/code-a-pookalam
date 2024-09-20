@@ -33,6 +33,33 @@ const server = http.createServer(async (req, res) => {
     }
 
 
+    if (req.url === "/know-more" || req.url === "/know-more.html") {
+
+        // var homePage;
+
+        fs.readFile(path.join(__dirname, "know-more.html"), (err, data) => {
+
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end({
+                    code: err.code,
+                    name: err.name,
+                    message: err.message
+                })
+            }
+
+            // homePage = data;
+
+
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            // res.end(homePage)
+            res.end(data.toString())
+        })
+    }
+
+
+
+
     if (req.url === "/index.js") {
 
         // var homePageScript;
@@ -79,7 +106,7 @@ const server = http.createServer(async (req, res) => {
     }
 
 
-    if (req.url == "/stache.png") {
+    if (req.url.endsWith(".png")) {
 
         var stream = fs.createReadStream(path.join(__dirname, req.url))
 
